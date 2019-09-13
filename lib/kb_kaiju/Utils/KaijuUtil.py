@@ -33,7 +33,7 @@ class KaijuUtil:
 
         if not os.path.exists(self.scratch):
             os.makedirs(self.scratch)
-        
+
 
     def run_kaiju_with_krona(self, params):
         '''
@@ -244,14 +244,14 @@ class KaijuUtil:
 
     def run_proc(self, command, log_output_file=None):
         log('Running: ' + ' '.join(command))
-        
+
         if log_output_file:  # if output is too chatty for STDOUT
             open (log_output_file, 'w')
             p = subprocess.Popen(command, cwd=self.scratch, shell=False, stdout=log_output_file, stderr=subprocess.STDOUT)
         else:
             p = subprocess.Popen(command, cwd=self.scratch, shell=False)
         exitCode = p.wait()
-            
+
         if log_output_file:
             log_output_file.close()
 
@@ -262,7 +262,7 @@ class KaijuUtil:
             raise ValueError('Error running command: ' + ' '.join(command) + '\n' +
                              'Exit Code: ' + str(exitCode))
         return exitCode
-            
+
 
     def validate_run_kaiju_with_krona_params(self, params):
         method = 'run_kaiju_with_krona'
@@ -336,7 +336,7 @@ class KaijuUtil:
                     bad_vals_msgs.append('Value greater than maximum for parameter '+arg+' ('+str(param[arg])+' > '+str(limit_vals[arg]['max']))
         if len(bad_vals_msgs) > 0:
             raise ValueError ("\n".join(bad_vals_msgs)+"\n")
-                    
+
         # return adjusted params
         return params
 
@@ -348,10 +348,10 @@ class KaijuUtil:
         for input_reads_item in input_reads:
 
             # download and subsample reads
-            staged_input = self.dsu_client.stage_input(input_item =           input_reads_item, 
-                                                       subsample_percent =    int(options['subsample_percent']), 
-                                                       subsample_replicates = int(options['subsample_replicates']), 
-                                                       subsample_seed =       int(options['subsample_seed']), 
+            staged_input = self.dsu_client.stage_input(input_item =           input_reads_item,
+                                                       subsample_percent =    int(options['subsample_percent']),
+                                                       subsample_replicates = int(options['subsample_replicates']),
+                                                       subsample_seed =       int(options['subsample_seed']),
                                                        fasta_file_extension = 'fastq')
             #input_dir = staged_input['input_dir']
             replicate_input = staged_input['replicate_input']
@@ -367,7 +367,7 @@ class KaijuUtil:
                 log_output_file = None
                 if dropOutput:  # if output is too chatty for STDOUT
                     log_output_file = os.path.join(self.scratch, input_reads_item['name'] + '.kaiju' + '.stdout')
-            
+
                 command = self._build_kaiju_command(single_kaiju_run_options)
                 self.run_proc (command, log_output_file)
 
@@ -386,11 +386,11 @@ class KaijuUtil:
                 single_kaijuReport_run_options = options
                 single_kaijuReport_run_options['input_item'] = input_reads_item
                 single_kaijuReport_run_options['tax_level'] = tax_level
-            
+
                 log_output_file = None
                 if dropOutput:  # if output is too chatty for STDOUT
                     log_output_file = os.path.join(self.scratch, input_reads_item['name'] + '.kaijuReport' + '.stdout')
-            
+
                 command = self._build_kaijuReport_command(single_kaijuReport_run_options)
                 self.run_proc (command, log_output_file)
 
@@ -410,7 +410,7 @@ class KaijuUtil:
                     single_kaijuReportPlots_options = options
                     single_kaijuReportPlots_options['input_item'] = input_reads_item
                     single_kaijuReportPlots_options['tax_level'] = tax_level
-            
+
                     per_sample_plot_files[tax_level][input_reads['name']] = self.outputBuilder_client.generate_kaijuReport_PerSamplePlots(single_kaijuReportPlots_options)
 
             # stacked bar plots
@@ -438,23 +438,23 @@ class KaijuUtil:
     def run_kaijuReportPlotsHTML_batch(self, options):
         out_html_folder = options['out_folder']
         out_html_files = dict()
-            
+
         if 'stacked_bar_plot_files' in options:
             out_html_files['bar'] = self.outputBuilder_client.build_html_for_kaijuReport_StackedPlots(
                 options['input_reads'],
                 options['summary_folder'],
                 out_html_folder,
-                'bar', 
+                'bar',
                 options['tax_levels'],
                 options['stacked_bar_plot_files']
             )
-                                  
+
         if 'stacked_area_plot_files' in options:
             out_html_files['area'] = self.outputBuilder_client.build_html_for_kaijuReport_StackedPlots(
                 options['input_reads'],
                 options['summary_folder'],
                 out_html_folder,
-                'area', 
+                'area',
                 options['tax_levels'],
                 options['stacked_area_plot_files']
             )
@@ -469,7 +469,7 @@ class KaijuUtil:
             )
 
         return out_html_files
-                                  
+
 
     def run_krona_batch(self, options, dropOutput=False):
         out_html_files = []
@@ -483,7 +483,7 @@ class KaijuUtil:
             log_output_file = None
             if dropOutput:  # if output is too chatty for STDOUT
                 log_output_file = os.path.join(self.scratch, input_reads_item['name'] + '.kaiju2krona' + '.stdout')
-            
+
             command = self._build_kaiju2krona_command(single_kaiju2krona_run_options)
             self.run_proc (command, log_output_file)
 
@@ -494,7 +494,7 @@ class KaijuUtil:
             log_output_file = None
             if dropOutput:  # if output is too chatty for STDOUT
                 log_output_file = os.path.join(self.scratch, input_reads_item['name'] + '.kronaImport' + '.stdout')
-            
+
             command = self._build_kronaImport_command(single_kronaImport_run_options)
             self.run_proc (command, log_output_file)
 
@@ -583,7 +583,7 @@ class KaijuUtil:
             command_list.append(str(options.get('threads')))
         if options.get('verbose'):
             command_list.append('-v')
-        
+
 
     def _build_kaiju_command(self, options, verbose=True):
         KAIJU_BIN_DIR  = os.path.join(os.path.sep, 'kb', 'module', 'kaiju', 'bin')
@@ -595,16 +595,16 @@ class KaijuUtil:
             options['threads'] = self.threads
         options['KAIJU_DB_NODES'] = os.path.join(KAIJU_DB_DIR, 'nodes.dmp')
         #options['KAIJU_DB_NAMES'] = os.path.join(KAIJU_DB_DIR, 'names.dmp')  # don't need for kaiju cmd
-        if options['db_type'] == 'kaiju_index':
-            options['KAIJU_DB_PATH'] = os.path.join(KAIJU_DB_DIR, 'kaiju_db.fmi')
-        elif options['db_type'] == 'kaiju_index_pg':
-            options['KAIJU_DB_PATH'] = os.path.join(KAIJU_DB_DIR, 'kaiju_db.fmi')
-        elif options['db_type'] == 'kaiju_index_nr':
+        if options['db_type'] == 'refseq':
+            options['KAIJU_DB_PATH'] = os.path.join(KAIJU_DB_DIR, 'kaiju_db_refseq.fmi')
+        elif options['db_type'] == 'progenomes':
+            options['KAIJU_DB_PATH'] = os.path.join(KAIJU_DB_DIR, 'kaiju_db_progenomes.fmi')
+        elif options['db_type'] == 'nr':
             options['KAIJU_DB_PATH'] = os.path.join(KAIJU_DB_DIR, 'kaiju_db_nr.fmi')
-        elif options['db_type'] == 'kaiju_index_nr_euk':
+        elif options['db_type'] == 'nr_euk':
             options['KAIJU_DB_PATH'] = os.path.join(KAIJU_DB_DIR, 'kaiju_db_nr_euk.fmi')
         else:
-            raise ValueError ('bad db_type: '+options['db_type']+' (must be one of "kaiju_index", "kaiju_index_pg", "kaiju_index_nr", "kaiju_index_nr_euk")')
+            raise ValueError ('bad db_type: '+options['db_type']+' (must be one of "refseq", "progenomes", "nr", "nr_euk")')
 
         self._validate_kaiju_options(options)
         command = [KAIJU_BIN]
@@ -614,7 +614,7 @@ class KaijuUtil:
 
     def _validate_kaijuReport_options(self, options):
         # 1st order required
-        func_name = 'kaijuReport'
+        func_name = 'kaiju2table'
         required_opts = [ 'in_folder',
                           'input_item',
                           'out_folder',
@@ -646,11 +646,6 @@ class KaijuUtil:
         if options.get('KAIJU_DB_NAMES'):
             command_list.append('-n')
             command_list.append(str(options.get('KAIJU_DB_NAMES')))
-        if options.get('in_folder'):
-            in_file = options['input_item']['name']+'.kaiju'
-            in_path = os.path.join(options['in_folder'], in_file)
-            command_list.append('-i')
-            command_list.append(in_path)
         if options.get('tax_level'):
             command_list.append('-r')
             command_list.append(str(options.get('tax_level')))
@@ -666,11 +661,13 @@ class KaijuUtil:
             command_list.append('-u')
         if int(options.get('full_tax_path')) == 1:
             command_list.append('-p')
-        
+        if options.get('in_folder'): # needs to be last
+            in_path = options['in_folder']
+            command_list.append(in_path)
 
     def _build_kaijuReport_command(self, options):
         KAIJU_BIN_DIR    = os.path.join(os.path.sep, 'kb', 'module', 'kaiju', 'bin')
-        KAIJU_REPORT_BIN = os.path.join(KAIJU_BIN_DIR, 'kaijuReport')
+        KAIJU_REPORT_BIN = os.path.join(KAIJU_BIN_DIR, 'kaiju2table')
         KAIJU_DB_DIR     = os.path.join(os.path.sep, 'data', 'kaijudb', options['db_type'])
 
         options['KAIJU_DB_NODES'] = os.path.join(KAIJU_DB_DIR, 'nodes.dmp')
@@ -725,7 +722,7 @@ class KaijuUtil:
             out_path = os.path.join (str(options.get('out_folder')), out_file)
             command_list.append('-o')
             command_list.append(out_path)
-        
+
 
     def _build_kaiju2krona_command(self, options):
         KAIJU_BIN_DIR     = os.path.join(os.path.sep, 'kb', 'module', 'kaiju', 'bin')
@@ -769,7 +766,7 @@ class KaijuUtil:
             in_file = options['input_item']['name']+'.krona'
             in_path = os.path.join(options['out_folder'], in_file)
             command_list.append(in_path)
-        
+
 
     def _build_kronaImport_command(self, options):
         KRONA_BIN_DIR    = os.path.join(os.path.sep, 'usr', 'local', 'bin')

@@ -1,3 +1,17 @@
+### Version 1.1.0
+__Changes__
+- updated kaiju to v1.7.2 (released 2019-07-12)
+- updated Kaiju reference databases; now using 2019-06-25 versions
+- added new required flags -i and -j to kaiju binary
+- renamed kaijuReport binary to kaiju2table
+- removed discontinued flag -i from kaiju2table
+- addressed new kaiju database directory structure
+- added new logic to address five-column kaiju report output
+
+### Version 1.0.6
+__Changes__
+- update docs
+
 ### Version 1.0.5
 __Changes__
 - fixed biom param check in code

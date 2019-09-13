@@ -5,7 +5,7 @@ determines taxonomic structure for microbial communities from shotgun metagenomi
 
 Module also utilizes Krona for visualization of results
 
-References: 
+References:
 Kaiju Homepage: http://kaiju.binf.ku.dk/
 Krona Homepage: https://github.com/marbl/Krona/wiki
 Kaiju DBs from: http://kaiju.binf.ku.dk/server
@@ -33,7 +33,7 @@ module kb_kaiju {
     */
     typedef int bool;
 
-    /* 
+    /*
     ** The workspace object refs are of form:
     **
     **    objects = ws.get_objects([{'ref': params['workspace_id']+'/'+params['obj_name']}])
@@ -47,15 +47,15 @@ module kb_kaiju {
     typedef string data_obj_ref;
 
 
-    /*  
+    /*
         kaiju command line:
 	===================
-	kaiju -t nodes.dmp -f kaiju_db.fmi -i inputfile.fastq  (for single-end libraries)
-	kaiju -t nodes.dmp -f kaiju_db.fmi -i fwd_file.fastq -j rev_file.fastq  (for paired-end libraries)
-	
+	kaiju -t nodes.dmp -f kaiju_db_refseq.fmi -i inputfile.fastq  (for single-end libraries)
+	kaiju -t nodes.dmp -f kaiju_db_refseq.fmi -i fwd_file.fastq -j rev_file.fastq  (for paired-end libraries)
+
 	-o <output_file>
 	-z <thread_count>                (e.g. 4)
-	
+
 	default run mode is MEM          (only consider exact matches)
 	-a greedy -e <num_substitutions> (Greedy run mode permits <e> mismatches)
 	-m <minimum_match_length>        (default: 11)
@@ -67,17 +67,17 @@ module kb_kaiju {
 	-p                               (disable translation of input sequences to protein)
 	-x                               (filter low-complexity regions with SEG - recommended)
 
-	kaijuReport command line:
+	kaiju2table command line:
 	=========================
-	kaijuReport -t nodes.dmp -n names.dmp -i kaiju.out -r genus -o kaiju.out.summary
+	kaiju2table -t nodes.dmp -n names.dmp -r genus -o kaiju.out.summary kaiju.out
 
 	-m <percent>                     (filter out members that are < percent of total reads)
 	-m -u                            (filter out members that are < percent of all classified reads)
 	-p                               (full taxon path instead of just taxon name)
 
-	addTaxonNames command line:
+	kaiju-addTaxonNames command line:
 	===========================
-	addTaxonNames -t nodes.dmp -n names.dmp -i kaiju.out -o kaiju.names.out
+	kaiju-addTaxonNames -t nodes.dmp -n names.dmp -i kaiju.out -o kaiju.names.out
 	-u                               (omit unclassified reads)
 	-p                               (print the full taxon path instead of just the taxon name)
 	-r <class1>[,<class2>,...]       (print the path containing only to the specified ranks. e.g. "-r phylum,genus")

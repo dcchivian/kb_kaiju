@@ -1,12 +1,11 @@
 #
 #  define display information
 #
-name: Kaiju - Taxonomic Classifier - v1.5.0
+name: Classify Taxonomy of Metagenomic Reads with Kaiju - v1.7.2
 tooltip: |
-	Taxonomic Classification of Shotgun Metagenomic Read data
+	Allows users to perform taxonomic classification of shotgun metagenomic read data with Kaiju.
 screenshots:
     - stacked_bar_plots.png
-    - krona.png
 
 icon: kaiju-green.png
 
@@ -31,128 +30,129 @@ suggestions:
 parameters :
     input_refs :
         ui-name : |
-            Read library (or Set) objects <font color=red>*</font>
+            Read Library or Set
         short-hint : |
-            The read library or read library set to examine
-        long-hint  : |
-            The read library or read library set to examine
+            Select the Read Library or ReadsSet to examine.
+
     tax_levels :
         ui-name : |
-            Taxonomic level
+            Taxonomic Level
         short-hint : |
-            The Taxonomic level that should be used for generating summary plots
-        long-hint : |
-            The Taxonomic level that should be used for generating summary plots
+            Select one or more taxonomic levels to include in the summary plots.
+
     db_type :
         ui-name : |
             Reference DB
         short-hint : |
-            Database to search against for classification
-        long-hint : |
-            Database to search against for classification
+            Select either the reference database or Kaiju to search against for classification.
+
     filter_percent :
         ui-name : |
-            Tail member percent
+            Low Abundance Filter
         short-hint : |
-            Dont include below this percentage of the reads in the summaries (default: 1%, note: must be integer)
-        long-hint : |
-            Dont include below this percentage of the reads in the summaries (default: 1%, note: must be integer)
+            Select to filter out taxa with low abundances, e.g. only show genera that comprise at least this percent of the total reads (default is 0.5%).
+
     subsample_percent :
         ui-name : |
             Subsample Percent
         short-hint : |
-            Subsample each data set to run faster
-        long-hint : |
-            Subsample each data set to run faster
+            Subsample each data set to run faster.
+
     subsample_replicates :
         ui-name : |
             Subsample Replicates
         short-hint : |
-            Add replicates to determine robustness of measurement
-        long-hint : |
-            Add replicates to determine robustness of measurement
+            Add replicates to determine the robustness of measurement.
+
     subsample_seed :
         ui-name : |
             Subsample Seed
         short-hint : |
-            Set seed for random subsample
-        long-hint : |
-            Set seed for random subsample
+            Set the seed for random subsampling.
+
     seg_filter :
         ui-name : |
-            Filter low-complexity
+            Filter Low-Complexity
         short-hint : |
-            Use SEG algorithm to remove low-complexity regions from input sequences (recommended)
-        long-hint : |
-            Use SEG algorithm to remove low-complexity regions from input sequences (recommended)
+            Use the SEG algorithm to remove low-complexity regions from input sequences (recommended).
+
     min_match_length :
         ui-name : |
             Min Match Length
         short-hint : |
-            Shortest alignment match to use for classification, in base pairs (default: 11)
-        long-hint : |
-            Shortest alignment match to use for classification, in base pairs (default: 11)
+            The shortest alignment match to use for classification, in base pairs (default is 11).
+
     greedy_run_mode :
         ui-name : |
-            Allow imperfect matches?
+            Allow Imperfect Matches?
         short-hint : |
-            Imperfect matches can be used for classification with below thresholds (recommended)
-        long-hint : |
-            Imperfect matches can be used for classification with below thresholds (recommended)
+            Imperfect matches can be used for classification with below thresholds (recommended).
+
     greedy_allowed_mismatches :
         ui-name : |
-            Greedy max mismatches
+            Greedy Max Mismatches
         short-hint : |
-            Greedy (imperfect) match maximum mismatches (default: 5)
-        long-hint : |
-            Greedy (imperfect) match maximum mismatches (default: 5)
+            Greedy (imperfect) match maximum mismatches (default is 5).
+
     greedy_min_match_score :
         ui-name : |
-            Greedy min bitscore
+            Greedy Min Bitscore
         short-hint : |
-            Greedy (imperfect) match minimum bitscore (def: 75)
-        long-hint : |
-            Greedy (imperfect) match minimum bitscore (def: 75)
+            Greedy (imperfect) match minimum bitscore (default is 75).
+
     greedy_max_e_value :
         ui-name : |
-            Greedy max e-value
+            Greedy Max E-value
         short-hint : |
-            Greedy (imperfect) match maximum e-value (default: 0.05)
-        long-hint : |
-            Greedy (imperfect) match maximum e-value (default: 0.05)
+            Greedy (imperfect) match maximum e-value (default is 0.05).
+
     sort_taxa_by :
         ui-name : |
             Sort Plots by
         short-hint : |
-            Show abundance plots sorted either by alphabetical of taxa or by total abundance (def: total abundance)
-        long-hint : |
-            Show abundance plots sorted either by alphabetical of taxa or by total abundance (def: total abundance)
+            Show abundance plots sorted either by alphabetical of taxa or by total abundance (def is total abundance).
 
 
 #
 # Desc
 #
 description : |
-	<p>This is a Narrative Method for running <a href="http://kaiju.binf.ku.dk/">Kaiju: Fast and sensitive taxonomic classification for metagenomics.</a>
-	Kaiju is written by Peter Menzel and Anders Krogh at the Bioinfomratics Centre, a part of the <a href="http://www1.bio.ku.dk/binf/" target="centre">Section for Computational and RNA Biology</a> at the <a href="http://www.ku.dk/english" target="ucop">University of Copenhagen</a>.
-	 </p>
-	 <hr>
-	 <p>
-	 wrapped for KBase by <a href="mailto:DCChivian@lbl.gov">Dylan Chivian</a>
-	 </p>
-	 <hr>
-	 <h3>Description</h3>
-	 Kaiju offers four reference databases for classification, which are downloaded from the <a href="http://kaiju.binf.ku.dk/server">Kaiju webserver page</a> (last updated 2017-05-16).  The databases are<p>
-	 <ul>
-	 <li> <b>RefSeq Complete Genomes</b>: 25M protein sequences from 7065 complete bacterial and archaeal genomes and 9334 viral genomes from NCBI RefSeq.
-	 <li> <b>proGenomes</b>: 20M protein sequences from bacterial and archaeal genomes and 9334 viral genomes from NCBI RefSeq.
-	 <li> <b>NCBI BLAST nr</b>: 94M protein sequences from nr: Bacteria, Archaea, and Viruses.
-	 <li> <b>NCBI BLAST nr+euk</b>: 103M protein sequences from nr: Bacteria, Archaea, Viruses, Fungi and microbial eukaryotes.
-	 </ul>
-	 <h3>Notes</h3>
-	 <ul>
-	 <li> <b>Krona Snapshots</b>: It may be that you will not be able to take a snapshot of the Krona plot.  This is a known issue with Krona for some versions of Chrome, Firefox on Windows 7 and 10 (https://github.com/marbl/Krona/issues/83).  We suggest trying with a different browser.
-	 </ul>
+  <p>This App makes the tool <a href="http://kaiju.binf.ku.dk/">Kaiju: Fast and sensitive taxonomic classification for metagenomics</a> available through KBase. Kaiju is written by Peter Menzel and Anders Krogh at the Bioinfomratics Centre, a part of the <a href="http://www1.bio.ku.dk/binf/" target="centre">Section for Computational and RNA Biology</a> at the <a href="http://www.ku.dk/english" target="ucop">University of Copenhagen</a>.</p>
+
+  <p>From the Kaiju homepage:
+    <blockquote>
+      Kaiju is a program for sensitive taxonomic classification of high-throughput sequencing reads from metagenomic whole genome sequencing or metatranscriptomics experiments.
+      <br/><br/>
+      Each sequencing read is assigned to a taxon in the NCBI taxonomy by comparing it to a reference database containing microbial and viral protein sequences. By using protein-level classification, Kaiju achieves a higher sensitivity compared with methods based on nucleotide comparison.
+      <br/><br/>
+      Kaiju can use either the set of available complete genomes from NCBI RefSeq or the microbial subset of the NCBI BLAST non-redundant protein database nr, optionally also including fungi and microbial eukaryotes.
+      <br/><br/>
+      Reads are translated into amino acid sequences, which are then searched in the database using a modified backward search on a memory-efficient implementation of the Burrows-Wheeler transform, which finds maximum exact matches (MEMs), optionally allowing mismatches in the protein alignment.
+      <br/><br/>
+      The search can process up to millions of reads per minute using, for example, only 10 GB RAM with a reference database comprising 4821 complete microbial genomes.
+    </blockquote>
+  </p>
+
+  <p>Kaiju offers four reference databases for classification, which are downloaded from the <a href="http://kaiju.binf.ku.dk/server">Kaiju webserver page</a> (last updated 2017-05-16). The databases are:
+    <ul>
+      <li><b>RefSeq Complete Genomes</b>: 25M protein sequences from 7065 complete bacterial and archaeal genomes and 9334 viral genomes from NCBI RefSeq.</li>
+      <li><b>proGenomes</b>: 20M protein sequences from bacterial and archaeal genomes and 9334 viral genomes from NCBI RefSeq.</li>
+      <li><b>NCBI BLAST nr</b>: 94M protein sequences from nr: Bacteria, Archaea, and Viruses.</li>
+      <li><b>NCBI BLAST nr+euk</b>: 103M protein sequences from nr: Bacteria, Archaea, Viruses, Fungi and microbial eukaryotes.</li>
+    </ul>
+  </p>
+
+  <p><b>Subsampling</b></p>
+  <p>Large datasets can take a long time to process, and there are situations where it is worth the wait. Sometimes, however, users just want a sample of how the App works or only want the higher taxonomic levels. At the higher taxonomic levels, the results are just as good when you run against a small fraction of the data, and it is <u>much</u> faster. The ability to randomly subsample reads was added as a preprocessor to running the Kaiju App. This function can greatly speed up the App for those situations where the it is being tested or only used for high taxonomic levels. See <a href=”https://narrative.kbase.us/#catalog/apps/kb_ReadsUtilities/KButil_Random_Subsample_Reads/release”>Randomly Subsample Reads</a> for more information on the subsampling process.</p>
+
+  <p><b>Notes</b></p>
+  <p>
+    <ul>
+      <li><b>Krona Snapshots</b>: It may be that you will not be able to take a snapshot of the Krona plot. This is a <a href=”https://github.com/marbl/Krona/issues/83”>known issue with Krona</a> for some versions of Chrome and Firefox on Windows 7 and 10. To remedy this, we suggest trying it with a different browser.</li>
+    </ul>
+  </p>
+
+  <p><strong>Team members who wrapped for KBase:</strong> Dylan Chivian. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
 
 publications :
     -

@@ -1,8 +1,8 @@
 {
-	"ver": "1.0.4",
+	"ver": "1.1.0",
 
 	"authors": [
-		"dylan"
+		"dylan","seanjungbluth"
 	],
 	"contact": "http://kbase.us/contact-us/",
 	"visible": true,

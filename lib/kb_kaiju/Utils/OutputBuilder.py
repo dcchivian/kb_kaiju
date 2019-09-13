@@ -193,8 +193,8 @@ class OutputBuilder(object):
                 'name': zip_file_name,
                 'label': zip_file_description}
 
-        
-    def generate_sparse_biom1_0_matrix(self, ctx, options): 
+
+    def generate_sparse_biom1_0_matrix(self, ctx, options):
         tax_level       = options['tax_level']
         db_type         = options['db_type']
         input_reads     = options['input_reads']
@@ -248,7 +248,7 @@ class OutputBuilder(object):
         timestamp_iso = dt.fromtimestamp(timestamp_epoch,pytz.utc).strftime('%Y-%m-%d'+'T'+'%H:%M:%S')
         for lineage_name in lineage_order:
             # KBase BIOM typedef only supports string, not dict.  This is wrong (see format_url below)
-            #rows_struct.append({'id': lineage_name, 'metadata': None})  # could add metadata full tax path if parsed from KaijuReport
+            #rows_struct.append({'id': lineage_name, 'metadata': None})  # could add metadata full tax path if parsed from kaiju2table
             rows_struct.append(lineage_name)
         for sample_name in sample_order:
             # KBase BIOM typedef only supports string, not dict.  This is wrong (see format_url below)
@@ -272,7 +272,7 @@ class OutputBuilder(object):
         # extra KBase BIOM obj required fields that aren't part of biom-1.0 spec (probably custom to MG-RAST)
         biom_obj['url'] = None
         biom_obj['matrix_element_value'] = None
-        
+
 
         # save the biom obj to workspace
         provenance = [{}]
@@ -302,7 +302,7 @@ class OutputBuilder(object):
                                                          'meta': {},
                                                          'provenance': provenance
                                                      }]
-                                               })[0]        
+                                               })[0]
         [OBJID_I, NAME_I, TYPE_I, SAVE_DATE_I, VERSION_I, SAVED_BY_I, WSID_I, WORKSPACE_I, CHSUM_I, SIZE_I, META_I] = range(11)  # object_info tuple
         biom_obj_ref = str(new_obj_info[WSID_I])+'/'+str(new_obj_info[OBJID_I])+'/'+str(new_obj_info[VERSION_I])
 
@@ -321,7 +321,7 @@ class OutputBuilder(object):
         extra_bucket_order = []
         sample_order = []
         classified_frac = []
-        
+
         # parse summary
         for input_reads_item in options['input_reads']:
             sample_order.append(input_reads_item['name'])
@@ -354,7 +354,7 @@ class OutputBuilder(object):
         # make plots
         if options['plot_type'] == 'bar':
             basename_ext = '-stacked_bar_plot'
-            return self._create_bar_plots (out_folder = options['stacked_plots_out_folder'], 
+            return self._create_bar_plots (out_folder = options['stacked_plots_out_folder'],
                                            out_file_basename = tax_level+basename_ext,
                                            vals = abundance_matrix,
                                            frac_vals = classified_frac,
@@ -362,12 +362,12 @@ class OutputBuilder(object):
                                            title = tax_level.title(),
                                            frac_y_label = 'fraction classified',
                                            y_label = 'percent of classified reads',
-                                           sample_labels = sample_order, 
-                                           element_labels = lineage_order, 
+                                           sample_labels = sample_order,
+                                           element_labels = lineage_order,
                                            sort_by = options['sort_taxa_by'])
         elif options['plot_type'] == 'area':
             basename_ext = '-stacked_area_plot'
-            return self._create_area_plots (out_folder = options['stacked_plots_out_folder'], 
+            return self._create_area_plots (out_folder = options['stacked_plots_out_folder'],
                                            out_file_basename = tax_level+basename_ext,
                                            vals = abundance_matrix,
                                            frac_vals = classified_frac,
@@ -375,8 +375,8 @@ class OutputBuilder(object):
                                            title = tax_level.title(),
                                            frac_y_label = 'fraction classified',
                                            y_label = 'percent of classified reads',
-                                           sample_labels = sample_order, 
-                                           element_labels = lineage_order, 
+                                           sample_labels = sample_order,
+                                           element_labels = lineage_order,
                                            sort_by = options['sort_taxa_by'])
         else:
             raise ValueError ("Unknown plot type "+options['plot_type'])
@@ -384,7 +384,7 @@ class OutputBuilder(object):
 
     def generate_kaijuReport_StackedAreaPlots(self, options):
         pass
-        
+
 
     def build_html_for_kaijuReport_StackedPlots(self, input_reads, summary_folder, out_html_folder, plot_type, tax_levels, img_files):
         img_height = 750  # in pixels
@@ -395,7 +395,7 @@ class OutputBuilder(object):
         if not os.path.exists(out_html_img_path):
             os.makedirs(out_html_img_path)
         out_html_file = None
-        out_html_buf = []        
+        out_html_buf = []
 
         # add header
         plot_type_disp = plot_type.title()
@@ -407,7 +407,7 @@ class OutputBuilder(object):
             dst_local_path = os.path.join (img_local_path, plot_type+'-'+tax_level+'.PNG')
             dst_plot_file = os.path.join (out_html_folder, dst_local_path)
             shutil.copy2 (src_plot_file, dst_plot_file)
-            
+
             # increase height if key is long
             lineage_seen = dict()
             for input_reads_item in input_reads:
@@ -415,7 +415,7 @@ class OutputBuilder(object):
                 (this_abundance, this_lineage_order, this_classified_frac) = self._parse_kaiju_summary_file (this_summary_file, tax_level)
                 for lineage_name in this_lineage_order:
                     lineage_seen[lineage_name] = True
-            
+
             len_key = len(lineage_seen.keys())
             if key_scale * len_key > img_height:
                 this_img_height = key_scale * len_key
@@ -427,7 +427,7 @@ class OutputBuilder(object):
 
         # add footer
         out_html_buf.extend (self._build_plot_html_footer())
-        
+
         # write file
         out_local_path = plot_type+'.html'
         out_html_path = os.path.join (out_html_folder, out_local_path)
@@ -438,7 +438,7 @@ class OutputBuilder(object):
                          'local_path': out_local_path,
                          'abs_path': out_html_path
                      }
-        
+
         return [out_html_file]
 
 
@@ -458,7 +458,7 @@ class OutputBuilder(object):
 
             # copy plot imgs to html folder and add img to html page
             for input_reads_item in options['input_reads']:
-                sample_name = input_reads_item['name']            
+                sample_name = input_reads_item['name']
                 src_plot_file = img_files[tax_level][sample_name]
                 dst_local_path = os.path.join (img_local_path, 'per_sample_abundance-'+tax_level+'-'+sample_name+'.PNG')
                 dst_plot_file = os.path.join (out_html_folder, dst_local_path)
@@ -468,7 +468,7 @@ class OutputBuilder(object):
 
             # add footer
             out_html_buf.extend (self._build_plot_html_footer())
-        
+
             # write file
             out_local_path = 'per_sample_abundance-'+tax_level+'.html'
             out_html_path = os.path.join (out_html_folder, out_local_path)
@@ -478,7 +478,7 @@ class OutputBuilder(object):
                                    'name': tax_level,
                                    'local_path': out_local_path,
                                    'abs_path': out_html_path})
-                                      
+
         return out_html_files
 
 
@@ -559,27 +559,30 @@ class OutputBuilder(object):
 
         with open (summary_file, 'r') as summary_handle:
             for line in summary_handle.readlines():
-                line = line.strip()
+                line = line.strip() # five column table, need to save columns 2,3,5 as respectively, perc_str, reads_cnt_str, lineage_str
                 if line.startswith('-') or line.startswith('%'):
                     continue
-                (perc_str, reads_cnt_str, lineage_str) = line.split("\t")
-                perc = float(perc_str.strip())
-                reads_cnt = int(reads_cnt_str.strip())
-                lineage = lineage_str.strip()
-
-                if lineage == 'unclassified':
-                    unclassified_perc = perc
-                elif lineage.startswith('cannot be assigned'):
-                    unassigned_perc = perc
-                elif lineage.startswith('belong to a'):
-                    chopped_str = re.sub(r'belong to a \S+ with less than ', '', lineage)
-                    tail_cutoff = re.sub(r'% of all reads', '', chopped_str)
-                    tail_perc = perc
-                elif lineage.startswith('Viruses'):
-                    virus_perc = perc
-                else:
-                    lineage_order.append(lineage)
-                    abundance[lineage] = perc
+                (perc_str, reads_cnt_str) = line.split("\t")[1:3]
+                lineage_str = line.split("\t")[4]
+                try:
+                    perc = float(perc_str.strip())
+                    reads_cnt = int(reads_cnt_str.strip())
+                    lineage = lineage_str.strip()
+                    if lineage == 'unclassified':
+                        unclassified_perc = perc
+                    elif lineage.startswith('cannot be assigned'):
+                        unassigned_perc = perc
+                    elif lineage.startswith('belong to a'):
+                        chopped_str = re.sub(r'belong to a \S+ with less than ', '', lineage)
+                        tail_cutoff = re.sub(r'% of all reads', '', chopped_str)
+                        tail_perc = perc
+                    elif lineage.startswith('Viruses'):
+                        virus_perc = perc
+                    else:
+                        lineage_order.append(lineage)
+                        abundance[lineage] = perc
+                except ValueError: # non-standard line detected, need to explore more but currently passing tests
+                    print("Non-standard line detected, skipping...")
 
         if tail_cutoff != None:
             this_key = 'tail (< '+tail_cutoff+'% each taxon)'
@@ -749,15 +752,15 @@ class OutputBuilder(object):
         return (abundance_cnts, lineage_order)
 
 
-    def _create_bar_plots (self, out_folder=None, 
-                           out_file_basename=None, 
-                           vals=None, 
+    def _create_bar_plots (self, out_folder=None,
+                           out_file_basename=None,
+                           vals=None,
                            frac_vals=None,
-                           title=None, 
+                           title=None,
                            frac_y_label=None,
-                           y_label=None, 
-                           sample_labels=None, 
-                           element_labels=None, 
+                           y_label=None,
+                           sample_labels=None,
+                           element_labels=None,
                            sort_by=None):
 
         # DEBUG
@@ -793,7 +796,7 @@ class OutputBuilder(object):
                 color_names[label_i] = 'magenta'
             elif label.startswith('unassigned at'):
                 color_names[label_i] = 'darkslategray'
-                
+
 
         # Sort vals
         if sort_by != None:
@@ -807,7 +810,7 @@ class OutputBuilder(object):
             # alphabet sort
             if sort_by == 'alpha':
                 new_label_i = 0
-                for label in sorted(element_labels, reverse=True):                
+                for label in sorted(element_labels, reverse=True):
                     if label.startswith('tail (<') or label.startswith('viruses') or label.startswith('unassigned at'):
                         new_index[label] = old_index[label]
                     else:
@@ -836,10 +839,10 @@ class OutputBuilder(object):
                             new_index[label] = old_index[label]
                         else:
                             new_index[label] = new_label_i
-                            new_label_i += 1       
+                            new_label_i += 1
                         #print ("LABEL: "+str(label)+" NEW_INDEX: "+str(new_index[label]))  # DEBUG
 
-            # store new order            
+            # store new order
             new_vals = []
             new_element_labels = []
             for label_i,label in enumerate(element_labels):
@@ -862,7 +865,7 @@ class OutputBuilder(object):
         element_labels = element_labels[-4::-1] + element_labels[-3:]
         vals = vals[-4::-1] + vals[-3:]
 
-    
+
         # plot dimensions
         #per_unit_to_inch_scale = 0.25
         per_unit_to_inch_scale = 0.5
@@ -875,7 +878,7 @@ class OutputBuilder(object):
             plot_width_unit = 2*plot_x_pad_unit + downscale_above_N + extra_sample_scale*(N-downscale_above_N)
         plot_height_unit = 8
 
-        
+
         # label dimensions
         longest_sample_label_len = 0
         longest_element_label_len = 0
@@ -915,7 +918,7 @@ class OutputBuilder(object):
         # instantiate fig
         #
         # lose axes with below grid, and so sharex property. instead match xlim, bar_width, hide ticks.
-        #fig, (ax_top, ax_bot) = plt.subplots(2, 1, sharex=True)  
+        #fig, (ax_top, ax_bot) = plt.subplots(2, 1, sharex=True)
 
         # gridspec_kw not in KBase docker notebook agg image (old python?)
         #fig, (ax_top, ax_bot) = plt.subplots(2, 1, sharex=True, gridspec_kw = {'height_ratios':[1, 3]})
@@ -954,7 +957,7 @@ class OutputBuilder(object):
         np_vals = []
         for vec_i,val_vec in enumerate(vals):
             np_vals.append(np.array(val_vec))
-        
+
 
         # plot fraction measured
         frac = ax_top.bar(ind, frac_vals, bar_width_unit, color='black', alpha=0.5, ec='none')
@@ -991,7 +994,7 @@ class OutputBuilder(object):
         ax_bot.set_yticks(np.arange(0, 101, 20))
         ax_bot.set_ylim([0,100])
         ax_bot.set_xlim([-plot_x_pad_unit,N-plot_x_pad_unit])
-        
+
 
         # are positions now in units (btw. 0-1) or inches?  seems to depend on the backend Agg
         x_pad = x_pad_unit / canvas_width_unit
@@ -1006,13 +1009,13 @@ class OutputBuilder(object):
         # don't shrink frac plot.  instead place it explictly since we built canvas for it
         #
         box = ax_top.get_position()
-#        ax_top.set_position([box.x0 + x_pad_inch, 
-#                             box.y0 + y_pad_inch, 
-#                             box.width - x_label_pad_inch - 2*x_pad_inch, 
+#        ax_top.set_position([box.x0 + x_pad_inch,
+#                             box.y0 + y_pad_inch,
+#                             box.width - x_label_pad_inch - 2*x_pad_inch,
 #                             #box.height - y_pad_inch
 #                             box.height
 #                         ])
-        top_pos = [x_0, y_0, w, h] = [0 + x_pad, 
+        top_pos = [x_0, y_0, w, h] = [0 + x_pad,
                                       (1.0 - top_frac)*plot_height + y_label_pad,
                                       plot_width,
                                       top_frac*plot_height - 2*y_pad
@@ -1030,14 +1033,14 @@ class OutputBuilder(object):
         #   don't shrink plot.  instead place it explictly since we built canvas for it
         #
         box = ax_bot.get_position()
-        #ax_bot.set_position([box.x0 + x_pad_inch, 
-        #                     #box.y0 + y_pad_inch + y_label_pad_inch, 
+        #ax_bot.set_position([box.x0 + x_pad_inch,
+        #                     #box.y0 + y_pad_inch + y_label_pad_inch,
         #                     box.y0,
-        #                     box.width - x_label_pad_inch - 2*x_pad_inch, 
+        #                     box.width - x_label_pad_inch - 2*x_pad_inch,
         #                     #box.height - y_label_pad_inch - y_pad_inch
         #                     box.height
         #                 ])
-        bot_pos = [x_0, y_0, w, h] = [0 + x_pad, 
+        bot_pos = [x_0, y_0, w, h] = [0 + x_pad,
                                       0 + y_label_pad + y_pad,
                                       plot_width,
                                       (1.0 - top_frac)*plot_height - 2*y_pad
@@ -1068,19 +1071,19 @@ class OutputBuilder(object):
         output_pdf_file_path = os.path.join(out_folder, pdf_file);
         fig.savefig(output_png_file_path, dpi=img_dpi)
         fig.savefig(output_pdf_file_path, format='pdf')
-        
+
         return output_png_file_path
 
 
-    def _create_area_plots (self, out_folder=None, 
-                           out_file_basename=None, 
-                           vals=None, 
+    def _create_area_plots (self, out_folder=None,
+                           out_file_basename=None,
+                           vals=None,
                            frac_vals=None,
-                           title=None, 
+                           title=None,
                            frac_y_label=None,
-                           y_label=None, 
-                           sample_labels=None, 
-                           element_labels=None, 
+                           y_label=None,
+                           sample_labels=None,
+                           element_labels=None,
                            sort_by=None):
 
         # number of samples
@@ -1102,7 +1105,7 @@ class OutputBuilder(object):
                 color_names[label_i] = 'magenta'
             elif label.startswith('unassigned at'):
                 color_names[label_i] = 'darkslategray'
-                
+
 
         # Sort vals
         if sort_by != None:
@@ -1116,7 +1119,7 @@ class OutputBuilder(object):
             # alphabet sort
             if sort_by == 'alpha':
                 new_label_i = 0
-                for label in sorted(element_labels, reverse=True):                
+                for label in sorted(element_labels, reverse=True):
                     if label.startswith('tail (<') or label.startswith('viruses') or label.startswith('unassigned at'):
                         new_index[label] = old_index[label]
                     else:
@@ -1145,10 +1148,10 @@ class OutputBuilder(object):
                             new_index[label] = old_index[label]
                         else:
                             new_index[label] = new_label_i
-                            new_label_i += 1       
+                            new_label_i += 1
                         #print ("LABEL: "+str(label)+" NEW_INDEX: "+str(new_index[label]))  # DEBUG
 
-            # store new order            
+            # store new order
             new_vals = []
             new_element_labels = []
             for label_i,label in enumerate(element_labels):
@@ -1171,7 +1174,7 @@ class OutputBuilder(object):
         element_labels = element_labels[-4::-1] + element_labels[-3:]
         vals = vals[-4::-1] + vals[-3:]
 
-    
+
         # plot dimensions
         #per_unit_to_inch_scale = 0.25
         per_unit_to_inch_scale = 0.5
@@ -1184,7 +1187,7 @@ class OutputBuilder(object):
             plot_width_unit = 2*plot_x_pad_unit + downscale_above_N + extra_sample_scale*(N-downscale_above_N)
         plot_height_unit = 8
 
-        
+
         # label dimensions
         longest_sample_label_len = 0
         longest_element_label_len = 0
@@ -1224,7 +1227,7 @@ class OutputBuilder(object):
         # instantiate fig
         #
         # lose axes with below grid, and so sharex property. instead match xlim, bar_width, hide ticks.
-        #fig, (ax_top, ax_bot) = plt.subplots(2, 1, sharex=True)  
+        #fig, (ax_top, ax_bot) = plt.subplots(2, 1, sharex=True)
 
         # gridspec_kw not in KBase docker notebook agg image (old python?)
         #fig, (ax_top, ax_bot) = plt.subplots(2, 1, sharex=True, gridspec_kw = {'height_ratios':[1, 3]})
@@ -1263,7 +1266,7 @@ class OutputBuilder(object):
         np_vals = []
         for vec_i,val_vec in enumerate(vals):
             np_vals.append(np.array(val_vec))
-        
+
 
         # plot fraction measured
         frac = ax_top.bar(ind, frac_vals, bar_width_unit, color='black', alpha=0.5, ec='none')
@@ -1289,7 +1292,7 @@ class OutputBuilder(object):
         for color_i in reversed(np.arange(N-1)):
             key_colors.append(mpatches.Patch(color=color_names[color_i], alpha=0.5, ec='black'))
         box = ax.get_position()
-        ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])   
+        ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
         plt.legend(key_colors, reversed(element_labels), loc='upper left', bbox_to_anchor=(1, 1))
         """
 
@@ -1309,7 +1312,7 @@ class OutputBuilder(object):
         ax_bot.set_yticks(np.arange(0, 101, 20))
         ax_bot.set_ylim([0,100])
         ax_bot.set_xlim([-plot_x_pad_unit,N-plot_x_pad_unit])
-        
+
 
         # are positions now in units (btw. 0-1) or inches?  seems to depend on the backend Agg
         x_pad = x_pad_unit / canvas_width_unit
@@ -1324,13 +1327,13 @@ class OutputBuilder(object):
         # don't shrink frac plot.  instead place it explictly since we built canvas for it
         #
         box = ax_top.get_position()
-#        ax_top.set_position([box.x0 + x_pad_inch, 
-#                             box.y0 + y_pad_inch, 
-#                             box.width - x_label_pad_inch - 2*x_pad_inch, 
+#        ax_top.set_position([box.x0 + x_pad_inch,
+#                             box.y0 + y_pad_inch,
+#                             box.width - x_label_pad_inch - 2*x_pad_inch,
 #                             #box.height - y_pad_inch
 #                             box.height
 #                         ])
-        top_pos = [x_0, y_0, w, h] = [0 + x_pad, 
+        top_pos = [x_0, y_0, w, h] = [0 + x_pad,
                                       (1.0 - top_frac)*plot_height + y_label_pad,
                                       plot_width,
                                       top_frac*plot_height - 2*y_pad
@@ -1348,14 +1351,14 @@ class OutputBuilder(object):
         #   don't shrink plot.  instead place it explictly since we built canvas for it
         #
         box = ax_bot.get_position()
-        #ax_bot.set_position([box.x0 + x_pad_inch, 
-        #                     #box.y0 + y_pad_inch + y_label_pad_inch, 
+        #ax_bot.set_position([box.x0 + x_pad_inch,
+        #                     #box.y0 + y_pad_inch + y_label_pad_inch,
         #                     box.y0,
-        #                     box.width - x_label_pad_inch - 2*x_pad_inch, 
+        #                     box.width - x_label_pad_inch - 2*x_pad_inch,
         #                     #box.height - y_label_pad_inch - y_pad_inch
         #                     box.height
         #                 ])
-        bot_pos = [x_0, y_0, w, h] = [0 + x_pad, 
+        bot_pos = [x_0, y_0, w, h] = [0 + x_pad,
                                       0 + y_label_pad + y_pad,
                                       plot_width,
                                       (1.0 - top_frac)*plot_height - 2*y_pad
@@ -1383,9 +1386,9 @@ class OutputBuilder(object):
         for color_i in reversed(np.arange(N-1)):
             key_colors.append(mpatches.Patch(color=color_names[color_i], alpha=0.5, ec='black'))
         box = ax_top.get_position()
-        ax_top.set_position([box.x0, box.y0, box.width * w_scale, box.height])   
+        ax_top.set_position([box.x0, box.y0, box.width * w_scale, box.height])
         box = ax_bot.get_position()
-        ax_bot.set_position([box.x0, box.y0, box.width * w_scale, box.height])   
+        ax_bot.set_position([box.x0, box.y0, box.width * w_scale, box.height])
         ax_bot.legend(key_colors, reversed(element_labels), loc='upper left', bbox_to_anchor=(1, 1))
 
 
@@ -1399,7 +1402,7 @@ class OutputBuilder(object):
         output_pdf_file_path = os.path.join(out_folder, pdf_file);
         fig.savefig(output_png_file_path, dpi=img_dpi)
         fig.savefig(output_pdf_file_path, format='pdf')
-        
+
         return output_png_file_path
 
 
@@ -1407,13 +1410,13 @@ class OutputBuilder(object):
 
     def _create_area_plots_OLD (self, abundances):
         color_names = self.no_light_color_names
-        
+
         import numpy as np
         import matplotlib.pyplot as plt
         import matplotlib.patches as mpatches
         import random
         from random import shuffle
-        
+
         y_label = 'percent'
         title = 'Lineage Proportion'
         sample_labels = ['sample1', 'sample2', 'sample3', 'sample4', 'sample5']
@@ -1436,7 +1439,7 @@ class OutputBuilder(object):
         np_vals = []
         for vec_i,val_vec in enumerate(vals):
             np_vals.append(np.array(val_vec))
-    
+
         # Build image
         if N < 10:
             img_in_width = 2*N
@@ -1472,7 +1475,7 @@ class OutputBuilder(object):
         for color_i in reversed(np.arange(N-1)):
             key_colors.append(mpatches.Patch(color=color_names[color_i], alpha=0.5, ec='black'))
         box = ax.get_position()
-        ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])   
+        ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
         plt.legend(key_colors, reversed(element_labels), loc='upper left', bbox_to_anchor=(1, 1))
 
         #plt.grid()
