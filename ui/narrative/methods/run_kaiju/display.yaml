@@ -133,12 +133,12 @@ description : |
     </blockquote>
   </p>
 
-  <p>Kaiju offers four reference databases for classification, which are downloaded from the <a href="http://kaiju.binf.ku.dk/server">Kaiju webserver page</a> (last updated 2017-05-16). The databases are:
+  <p>Kaiju offers four reference databases for classification, which are downloaded from the <a href="http://kaiju.binf.ku.dk/server">Kaiju webserver page</a> (last updated 2019-06-25). The databases are:
     <ul>
-      <li><b>RefSeq Complete Genomes</b>: 25M protein sequences from 7065 complete bacterial and archaeal genomes and 9334 viral genomes from NCBI RefSeq.</li>
-      <li><b>proGenomes</b>: 20M protein sequences from bacterial and archaeal genomes and 9334 viral genomes from NCBI RefSeq.</li>
-      <li><b>NCBI BLAST nr</b>: 94M protein sequences from nr: Bacteria, Archaea, and Viruses.</li>
-      <li><b>NCBI BLAST nr+euk</b>: 103M protein sequences from nr: Bacteria, Archaea, Viruses, Fungi and microbial eukaryotes.</li>
+      <li><b>RefSeq Complete Genomes</b>: 50.9M protein sequences from completely assembled bacterial, archaeal, and viral genomes from NCBI RefSeq.</li>
+      <li><b>proGenomes</b>: 19.7M protein sequences from a representative set of genomes derived from NCBI RefSeq bacterial, archaeal, and viral genomes.</li>
+      <li><b>NCBI BLAST nr</b>: 164M protein sequences from nr: Bacteria, Archaea, and Viruses.</li>
+      <li><b>NCBI BLAST nr+euk</b>: 178M protein sequences from nr: Bacteria, Archaea, Viruses, Fungi and microbial eukaryotes.</li>
     </ul>
   </p>
 
@@ -148,11 +148,12 @@ description : |
   <p><b>Notes</b></p>
   <p>
     <ul>
+      <li><b>Kaiju v1.7.2 updates</b>: flags -i and -j now required to run kaiju binary; kaijuReport renamed to kaiju2table</li>
       <li><b>Krona Snapshots</b>: It may be that you will not be able to take a snapshot of the Krona plot. This is a <a href=”https://github.com/marbl/Krona/issues/83”>known issue with Krona</a> for some versions of Chrome and Firefox on Windows 7 and 10. To remedy this, we suggest trying it with a different browser.</li>
     </ul>
   </p>
 
-  <p><strong>Team members who wrapped for KBase:</strong> Dylan Chivian. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
+  <p><strong>Team members who wrapped for KBase:</strong> Dylan Chivian (lead), Sean Jungbluth. For questions, please <a href=”http://kbase.us/contact-us/”>contact us</a>.</p>
 
 publications :
     -

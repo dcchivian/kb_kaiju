@@ -241,8 +241,8 @@ class kb_kaijuTest(unittest.TestCase):
     #
     # Uncomment to skip this test
     # HIDE @unittest.skip("skipped test_1_kaiju_SE_lib")
-    def test_1_kaiju_SE_lib(self):
-        method_name = 'test_1_kaiju_SE_lib'
+    def test_2_kaiju_SE_lib(self):
+        method_name = 'test_2_kaiju_SE_lib'
         print ("\n"+('='*(10+len(method_name))))
         print ("RUNNING "+method_name+"()")
         print (('='*(10+len(method_name)))+"\n")

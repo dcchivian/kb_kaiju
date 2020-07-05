@@ -595,6 +595,7 @@ class KaijuUtil:
             options['threads'] = self.threads
         options['KAIJU_DB_NODES'] = os.path.join(KAIJU_DB_DIR, 'nodes.dmp')
         #options['KAIJU_DB_NAMES'] = os.path.join(KAIJU_DB_DIR, 'names.dmp')  # don't need for kaiju cmd
+        print('db_type')
         if options['db_type'] == 'refseq':
             options['KAIJU_DB_PATH'] = os.path.join(KAIJU_DB_DIR, 'kaiju_db_refseq.fmi')
         elif options['db_type'] == 'progenomes':
@@ -661,8 +662,9 @@ class KaijuUtil:
             command_list.append('-u')
         if int(options.get('full_tax_path')) == 1:
             command_list.append('-p')
-        if options.get('in_folder'): # needs to be last
-            in_path = options['in_folder']
+        if options.get('in_folder'):
+            in_file = options['input_item']['name']+'.kaiju'
+            in_path = os.path.join(options['in_folder'], in_file)
             command_list.append(in_path)
 
     def _build_kaijuReport_command(self, options):

@@ -1,3 +1,15 @@
+### Version 1.1.3
+__Changes__
+- fixed a read_id edge case
+
+### Version 1.1.2
+__Changes__
+- fixed default database value
+
+### Version 1.1.1
+__Changes__
+- fixed error due to unpaired rev reads
+
 ### Version 1.1.0
 __Changes__
 - updated kaiju to v1.7.2 (released 2019-07-12)

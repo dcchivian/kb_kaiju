@@ -16,7 +16,7 @@ Kaiju paper: Menzel, P. et al. (2016) Fast and sensitive taxonomic classificatio
 Krona paper: Ondov BD, Bergman NH, and Phillippy AM. Interactive metagenomic visualization in a Web browser. BMC Bioinformatics. 2011 Sep 30; 12(1):385.
 
 Kaiju License:
-Copyright (c) 2015, 2016, 2017 Peter Menzel and Anders Krogh
+Copyright (c) 2015, 2016, 2017, 2018, 2019, 2020 Peter Menzel and Anders Krogh
 
 Kaiju is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
 
@@ -67,13 +67,17 @@ module kb_kaiju {
 	-p                               (disable translation of input sequences to protein)
 	-x                               (filter low-complexity regions with SEG - recommended)
 
+
 	kaiju2table command line:
 	=========================
 	kaiju2table -t nodes.dmp -n names.dmp -r genus -o kaiju.out.summary kaiju.out
 
 	-m <percent>                     (filter out members that are < percent of total reads)
-	-m -u                            (filter out members that are < percent of all classified reads)
+	-u                               (filter out members that are < percent of all classified reads)
 	-p                               (full taxon path instead of just taxon name)
+  -l                               (taxon path containing only ranks specified by a comma-separated list)
+  -c <integer > 0>                 (minimum required number of reads for the taxon (except viruses) to be reported)
+  -e                               (expand viruses, which are always shown as full taxon path and read counts are not summarized in higher taxonomic levels)
 
 	kaiju-addTaxonNames command line:
 	===========================

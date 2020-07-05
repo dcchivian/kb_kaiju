@@ -41,12 +41,13 @@ RUN \
 # For kaiju dbs (rest of db installation to ref data mount in entrypoint.sh init script)
 RUN mkdir -p /data/kaijudb
 
-
 # -----------------------------------------
 
 COPY ./ /kb/module
+
 RUN mkdir -p /kb/module/work
 RUN chmod -R a+rw /kb/module
+
 
 WORKDIR /kb/module
 

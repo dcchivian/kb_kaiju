@@ -122,11 +122,11 @@ class DataStagingUtils(object):
         return expanded_input
 
 
-    def stage_input(self, 
-                    input_item=None, 
-                    subsample_percent=10, 
-                    subsample_replicates=1, 
-                    subsample_seed=1, 
+    def stage_input(self,
+                    input_item=None,
+                    subsample_percent=10,
+                    subsample_replicates=1,
+                    subsample_seed=1,
                     fasta_file_extension='fastq'):
         '''
         Stage input based on an input data reference for Kaiju
@@ -222,7 +222,7 @@ class DataStagingUtils(object):
         if subsample_percent == 100:
             replicate_input = [input_item]
         else:
-            replicate_input = self._randomly_subsample_reads(input_item, 
+            replicate_input = self._randomly_subsample_reads(input_item,
                                                              subsample_percent    = subsample_percent,
                                                              subsample_replicates = subsample_replicates,
                                                              subsample_seed       = subsample_seed)
@@ -230,7 +230,7 @@ class DataStagingUtils(object):
             os.remove(input_item['fwd_file'])
             if input_item['type'] == self.PE_flag:
                 os.remove(input_item['rev_file'])
-            
+
 
         # return input file info
         #staged_input['input_dir'] = input_dir
@@ -250,7 +250,7 @@ class DataStagingUtils(object):
 
         # for now can only do percentage instead of raw cnt of reads per subsample
         use_reads_num  = False
-        use_reads_perc = True        
+        use_reads_perc = True
         reads_num = 0  # not used.  subsample_percent used instead
 
         # init randomizer
@@ -262,7 +262,7 @@ class DataStagingUtils(object):
         if input_item['type'] == self.PE_flag:
             print ("SUBSAMPLING PE library "+input_item['name'])  # DEBUG
 
-            # file paths         
+            # file paths
             input_fwd_path = re.sub ("\.fastq$", "", input_item['fwd_file'])
             input_fwd_path = re.sub ("\.FASTQ$", "", input_fwd_path)
             input_rev_path = re.sub ("\.fastq$", "", input_item['rev_file'])
@@ -297,6 +297,8 @@ class DataStagingUtils(object):
                             raise ValueError ("badly formatted rec line: '"+line+"'")
                         read_id = line.rstrip('\n')
                         read_id = re.sub ("[ \t]+.*$", "", read_id)
+                        # added below line to manage read_id edge case: e.g. @SRR5891520.1.1 (forward) & @SRR5891520.1.2 (reverse)
+                        read_id = ''.join(read_id.rsplit('.',1)) # replace last '.' with ''
                         read_id = re.sub ("[\/\.\_\-\:\;][012lrLRfrFR53]\'*$", "", read_id)
                         fwd_ids[read_id] = True
 
@@ -307,7 +309,7 @@ class DataStagingUtils(object):
 
 
             # read reverse to determine paired
-            print ("DETERMINING PAIRED IDS")  # DEBUG                                                       
+            print ("DETERMINING PAIRED IDS")  # DEBUG
             with open (input_item['rev_file'], 'r', 0) as input_reads_file_handle:
                 rec_line_i = -1
                 for line in input_reads_file_handle:
@@ -319,8 +321,10 @@ class DataStagingUtils(object):
                             raise ValueError ("badly formatted rec line: '"+line+"'")
                         read_id = line.rstrip('\n')
                         read_id = re.sub ("[ \t]+.*$", "", read_id)
+                        # added below line to manage read_id edge case: e.g. @SRR5891520.1.1 (forward) & @SRR5891520.1.2 (reverse)
+                        read_id = ''.join(read_id.rsplit('.',1)) # replace last '.' with ''
                         read_id = re.sub ("[\/\.\_\-\:\;][012lrLRfrFR53]\'*$", "", read_id)
-                        if fwd_ids[read_id]:
+                        if fwd_ids.get(read_id, False):
                             paired_ids[read_id] = True
                             paired_ids_list.append(read_id)
 
@@ -329,7 +333,7 @@ class DataStagingUtils(object):
 #                            print ("read_id: '"+str(read_id)+"'")
 #                        rec_cnt += 1
             total_paired_reads = len(paired_ids_list)
-            print ("TOTAL PAIRED READS CNT: "+str(total_paired_reads))  # DEBUG     
+            print ("TOTAL PAIRED READS CNT: "+str(total_paired_reads))  # DEBUG
 
 
             # Determine sublibrary sizes
@@ -387,6 +391,8 @@ class DataStagingUtils(object):
                             rec_buf = []
                         read_id = line.rstrip('\n')
                         read_id = re.sub ("[ \t]+.*$", "", read_id)
+                        # added below line to manage read_id edge case: e.g. @SRR5891520.1.1 (forward) & @SRR5891520.1.2 (reverse)
+                        read_id = ''.join(read_id.rsplit('.',1)) # replace last '.' with ''
                         read_id = re.sub ("[\/\.\_\-\:\;][012lrLRfrFR53]\'*$", "", read_id)
                         last_read_id = read_id
                         try:
@@ -416,7 +422,7 @@ class DataStagingUtils(object):
 
 
             # split rev paired
-            print ("WRITING REV SPLIT PAIRED")  # DEBUG                                                     
+            print ("WRITING REV SPLIT PAIRED")  # DEBUG
             paired_output_reads_file_handles = []
             for lib_i in range(split_num):
                 paired_output_reads_file_handles.append(open (output_rev_paired_file_path_base+"-"+str(lib_i)+".fastq", 'w', paired_buf_size))
@@ -448,6 +454,8 @@ class DataStagingUtils(object):
                             rec_buf = []
                         read_id = line.rstrip('\n')
                         read_id = re.sub ("[ \t]+.*$", "", read_id)
+                        # added below line to manage read_id edge case: e.g. @SRR5891520.1.1 (forward) & @SRR5891520.1.2 (reverse)
+                        read_id = ''.join(read_id.rsplit('.',1)) # replace last '.' with ''
                         read_id = re.sub ("[\/\.\_\-\:\;][012lrLRfrFR53]\'*$", "", read_id)
                         last_read_id = read_id
                         try:
@@ -545,6 +553,8 @@ class DataStagingUtils(object):
                             raise ValueError ("badly formatted rec line: '"+line+"'")
                         read_id = line.rstrip('\n')
                         read_id = re.sub ("[ \t]+.*$", "", read_id)
+                        # added below line to manage read_id edge case: e.g. @SRR5891520.1.1 (forward) & @SRR5891520.1.2 (reverse)
+                        read_id = ''.join(read_id.rsplit('.',1)) # replace last '.' with ''
                         read_id = re.sub ("[\/\.\_\-\:\;][012lrLRfrFR53]\'*$", "", read_id)
                         if read_id in paired_ids:
                             raise ValueError ("repeat read_id: "+read_id)
@@ -618,6 +628,8 @@ class DataStagingUtils(object):
                             rec_buf = []
                         read_id = line.rstrip('\n')
                         read_id = re.sub ("[ \t]+.*$", "", read_id)
+                        # added below line to manage read_id edge case: e.g. @SRR5891520.1.1 (forward) & @SRR5891520.1.2 (reverse)
+                        read_id = ''.join(read_id.rsplit('.',1)) # replace last '.' with ''
                         read_id = re.sub ("[\/\.\_\-\:\;][012lrLRfrFR53]\'*$", "", read_id)
                         last_read_id = read_id
                     rec_buf.append(line)
